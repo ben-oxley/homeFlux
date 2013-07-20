@@ -1,7 +1,7 @@
 class SerialCapture
   
   def initialize
-   @settings{ :port_file => '/dev/ttyACM0', #Find the proper one!
+   @settings = { :port_file => '/dev/ttyACM0', #Find the proper one!
       :baud_rate => 9600,
       :data_bits => 8,
       :stop_bits => 1,
