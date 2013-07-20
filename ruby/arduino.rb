@@ -16,7 +16,7 @@ ardunio.start do |response|
   
   puts bri.to_i
   
-  lights.set_brightness(bri.to_i)
+  lights.set_brightness(255 - bri.to_i)
   
 end
 
