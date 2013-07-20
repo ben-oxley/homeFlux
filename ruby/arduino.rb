@@ -7,8 +7,7 @@ require './light_control'
 ardunio = SerialCapture.new
 ardunio.start do |response|
   
-  puts response
-  
-  puts "chomp #{response.gsub('\n', '')}"
+  puts "chomp #{response.gsub("\n", "")}"
+  puts response.split(',')
 end
 
