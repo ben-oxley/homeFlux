@@ -11,6 +11,7 @@ lights = LightControl.new('192.168.1.225')
 count = 0
 
 ardunio.start do |response|
+  count = 0 if count == 24
   
   # process brightness
   unscaled_bri = response.split(',')[1]
@@ -23,7 +24,7 @@ ardunio.start do |response|
   puts "(" + Time.now.to_s + "; " + elevation.to_s + "; " + temperature.to_s + ")"
   
   
-  count = 0 if count == 23
+  count += 1
 
 end
 
