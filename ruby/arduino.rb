@@ -9,6 +9,6 @@ ardunio.start do |response|
   
   puts response
   
-  puts "chomp #{response.chomp}"
+  puts "chomp #{response.gsub('\n', '')}"
 end
 
