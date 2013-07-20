@@ -38,6 +38,7 @@ class LightControl
     if bri == 0
       lights_off
     else
+      lights_on
       update_light_group({:bri => bri}) 
     end
     @current_brightness = bri
