@@ -10,8 +10,8 @@ module Temp
 	TRANSITION_LOW = SOLAR_CIVIL_TWILIGHT_ELEV
 	TRANSITION_HIGH = 3.0
 
-	NIGHT_TEMP = 3000 #Kelvin
-	DAY_TEMP = 5500 #Kelvin
+	NIGHT_TEMP = 2000 #Kelvin
+	DAY_TEMP = 6000 #Kelvin
 
 	def Temp.calculate_interpolated_temperature(elevation, temp_day, temp_night)
 
