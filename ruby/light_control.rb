@@ -90,7 +90,6 @@ class LightControl
     @lights_off = false
   end  
   
-  private
   
   def update_light_group(params)
     puts HTTParty.put("http://#{@ip}/api/newdeveloper/groups/0/action", {:body => JSON.generate( params )})
