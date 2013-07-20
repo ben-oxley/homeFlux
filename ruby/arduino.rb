@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'serialport'
-require './lights/light_control'
+
 
 #We need to find out what port your arduino is on
 #and also what the corresponding file is on /dev
@@ -24,8 +24,9 @@ loop do
   # value 2 = 0 - 1024 light readying (200-900 ish)
   # value 3 = desired intensity of light
   #arduino.write "whateveryouwanttowrite"
-  current_line = arduino.readline("\r") #read everything up to '\r'
-  puts current_line
+  puts arduino.readline("\r") #read everything up to '\r'
+  current_line = arduino.readline("\r")
+
   # wait a little bit before we read the next message?
   # I think we want to do something and restart reading immediately
   sleep wait_time
