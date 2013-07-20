@@ -24,8 +24,8 @@ loop do
   # value 2 = 0 - 1024 light readying (200-900 ish)
   # value 3 = desired intensity of light
   #arduino.write "whateveryouwanttowrite"
-  puts current_line = arduino.readline("\r").chomp #read everything up to '\r'
-
+  current_line = arduino.readline("\r") #read everything up to '\r'
+  puts current_line
   # wait a little bit before we read the next message?
   # I think we want to do something and restart reading immediately
   sleep wait_time
