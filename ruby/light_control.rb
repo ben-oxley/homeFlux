@@ -38,7 +38,7 @@ class LightControl
     if bri == 0
       lights_off
     else
-      lights_on
+      lights_on if lights_off?
       update_light_group({:bri => bri}) 
     end
     @current_brightness = bri
@@ -65,10 +65,16 @@ class LightControl
   
   def lights_off
     update_light_group({:on => false})
+    @lights_off = true
   end
   
   def lights_on
     update_light_group({:on => true})
+    @lights_off = false
+  end
+  
+  def lights_off?
+    @lights_off
   end
   
   def reset_lights
@@ -81,6 +87,7 @@ class LightControl
     update_light_group(params)
     @current_temp = 400
     @current_brightness = 120
+    @lights_off = false
   end  
   
   private
