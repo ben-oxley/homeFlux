@@ -6,8 +6,8 @@ class SerialCapture
       data_bits = 8,
       stop_bits = 1,
       parity = SerialPort::NONE,
-      wait_time = 1/4.0,
-    } #in seconds
+      wait_time = 1/4.0
+    } 
   end
   
   def start(&block)
