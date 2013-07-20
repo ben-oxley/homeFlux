@@ -92,7 +92,7 @@ class LightControl
   
   
   def update_light_group(params)
-    puts HTTParty.put("http://#{@ip}/api/newdeveloper/groups/0/action", {:body => JSON.generate( params )})
+    HTTParty.put("http://#{@ip}/api/newdeveloper/groups/0/action", {:body => JSON.generate( params )})
   end
   
 end
