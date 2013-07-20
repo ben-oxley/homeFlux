@@ -25,7 +25,6 @@ loop do
   # value 3 = desired intensity of light
   #arduino.write "whateveryouwanttowrite"
   puts arduino.readline("\r") #read everything up to '\r'
-  current_line = arduino.readline("\r")
 
   # wait a little bit before we read the next message?
   # I think we want to do something and restart reading immediately
