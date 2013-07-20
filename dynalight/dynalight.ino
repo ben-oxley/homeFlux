@@ -7,6 +7,8 @@
 #include <Adafruit_TFTLCD.h> // Hardware-specific library
 #include <SD.h>
 #include <TouchScreen.h>
+#include <MemoryFree.h>
+#include <PID_v1.h>
 
 #ifndef USE_ADAFRUIT_SHIELD_PINOUT 
  #error "This sketch is intended for use with the TFT LCD Shield. Make sure that USE_ADAFRUIT_SHIELD_PINOUT is #defined in the Adafruit_TFTLCD.h library file."
@@ -17,7 +19,7 @@
 
 #define SD_CS 5 // Card select for shield use
 
-#define FIRMWARE "dynaLight v0.01 Ben Oxley (C) Patent Pending"
+#define FIRMWARE "dynaLight v0.01 Ben Oxley"
 
 #define	BLACK   0x0000
 #define	BLUE    0x001F
@@ -47,7 +49,9 @@
 #define White           0xFFFF      /* 255, 255, 255 */
 #define Orange          0xFD20      /* 255, 165,   0 */
 #define GreenYellow     0xAFE5      /* 173, 255,  47 */
-#define Pink                        0xF81F
+#define Pink            0xF81F
+#define JJCOLOR         0x1CB6
+#define JJORNG          0xFD03
 
 // These are the pins for the shield!
 #define YP A1  // must be an analog pin, use "An" notation!
@@ -63,9 +67,8 @@
 #define MINPRESSURE 10
 #define MAXPRESSURE 1000
 
-#define BOXSIZE   40
 #define PENRADIUS  10
-int oldcolor, currentcolor;
+//int oldcolor, currentcolor;
 
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
@@ -77,12 +80,20 @@ TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 Adafruit_TFTLCD tft;
 uint8_t         spi_save;
 
+Point p;
+
 int m,h;
 long lastseconds;
 int last_m;
 
-int wheelval = 0;
+double wheelval = 0;
 int lastwheelval = 0;
+
+//Define Variables we'll be connecting to
+double Input, Output;
+
+//Specify the links and initial tuning parameters
+PID myPID(&Input, &Output, &wheelval,1.0,1.0,0.0, DIRECT);
 
 void setup()
 {
@@ -92,7 +103,7 @@ void setup()
 
   //uint16_t identifier = tft.readID();
 uint16_t identifier = 0x7575;
-
+/*
   if(identifier == 0x9325) {
     progmemPrintln(PSTR("Found ILI9325 LCD driver"));
   } else if(identifier == 0x9328) {
@@ -102,15 +113,9 @@ uint16_t identifier = 0x7575;
   } else {
     progmemPrint(PSTR("Unknown LCD driver chip: "));
     Serial.println(identifier, HEX);
-    progmemPrintln(PSTR("If using the Adafruit 2.8\" TFT Arduino shield, the line:"));
-    progmemPrintln(PSTR("  #define USE_ADAFRUIT_SHIELD_PINOUT"));
-    progmemPrintln(PSTR("should appear in the library header (Adafruit_TFT.h)."));
-    progmemPrintln(PSTR("If using the breakout board, it should NOT be #defined!"));
-    progmemPrintln(PSTR("Also if using the breakout, double-check that all wiring"));
-    progmemPrintln(PSTR("matches the tutorial."));
     return;
   }
- 
+*/ 
   tft.begin(identifier);
 
   progmemPrint(PSTR("Initializing SD card..."));
@@ -121,13 +126,15 @@ uint16_t identifier = 0x7575;
   progmemPrintln(PSTR("OK!"));
   spi_save = SPCR;
   tft.setCursor(0, 0);
+  //tft.fillScreen(BLACK);
+  //tft.setRotation(1);
+  bmpDraw("Arrow.bmp", 0, 0);
   tft.fillScreen(0);
   tft.setRotation(1);
   bmpDraw("UI.bmp", 0, 0);
-  tft.fillScreen(0);
-  tft.setRotation(1);
-  bmpDraw("UI.bmp", 0, 0);
-  
+  tft.setTextSize(2);
+  tft.print("Menu");
+  myPID.SetMode(AUTOMATIC);
 }
 
 void loop()
@@ -136,12 +143,57 @@ void loop()
   printTime();
   //drawcircle();
   checkswipe();
+  //drawcircle();
+  Input = analogRead(A5);
   if (lastwheelval != wheelval) { 
     lastwheelval = wheelval; 
-    Serial.println(wheelval);
     polarcoords(105,map(wheelval, 0, 255, -220, 45));
     
+    Serial.print(wheelval); Serial.print(","); Serial.print(analogRead(A5)); Serial.print(","); Serial.println(50); Serial.print(","); Serial.println(freeMemory());
+    //Serial.println(wheelval);
   }
+  myPID.Compute();
+}
+
+void menu()
+{
+  tft.fillScreen(0);
+  tft.setCursor(0, 0);
+  tft.setTextColor(WHITE);
+  tft.setTextSize(1);
+  boxes();
+  tft.setCursor(22, 37);
+  tft.print("Day Light Colour");
+  tft.setCursor(192, 37);
+  tft.print("Night Light Colour");
+  tft.setCursor(22, 97);
+  tft.print("LDR Settings");
+  tft.setCursor(192, 97);
+  tft.print("Connection Settings");
+  tft.setCursor(22, 157);
+  tft.print("Energy Saving");
+  tft.setCursor(192, 157);
+  tft.print("Return");
+  delay(100);
+  digitalWrite(13, HIGH);
+  Point p = ts.getPoint();
+  digitalWrite(13, LOW);
+  while (p.z < MINPRESSURE) {
+  digitalWrite(13, HIGH);
+  delay(10);
+  p = ts.getPoint();
+  digitalWrite(13, LOW);
+  delay(10);
+  }
+  //area 1
+  tft.fillRect(0, 0, 320, 240, BLACK);
+  //tft.fillScreen(BLACK);
+  //tft.setRotation(1);
+  bmpDraw("UI.bmp", 0, 0);
+  delay(1000);
+  tft.setTextSize(2);
+  delay(500);
+  tft.print("Menu");
 }
 
 void printTime()
@@ -166,21 +218,22 @@ void printTime()
     tft.setTextColor(WHITE);  tft.setTextSize(3);
     tft.print(sh+":"+sm);
     lastseconds = seconds;
+    Serial.print(wheelval); Serial.print(","); Serial.print(analogRead(A5)); Serial.print(","); Serial.println(50); //Serial.print(","); Serial.println(freeMemory());
   }
   
 }
-
+/*
 void drawcircle() 
 {
   for (int i = -220; i < 45; i++) {
     polarcoords(105,i);
   }
 }
-
+*/
 void polarcoords(int radius, int angle)
 {
   static int xlast, ylast;
-  if (xlast != 0) tft.fillCircle(xlast, ylast, PENRADIUS, tft.color565(0,55,75));
+  //if (xlast != 0) tft.fillCircle(xlast, ylast, PENRADIUS, tft.color565(0,55,75));
   int xout, yout;
   xout = cos(2*PI*angle/360)*radius+(tft.width()/2)+5;
   yout = sin(2*PI*angle/360)*radius+(tft.height()/2)+12;
@@ -194,7 +247,7 @@ void checkswipe()
   static int ylast;
   int yup, ydown;
   digitalWrite(13, HIGH);
-  Point p = ts.getPoint();
+  p = ts.getPoint();
   digitalWrite(13, LOW);
 
   // if sharing pins, you'll need to fix the directions of the touchscreen pins
@@ -207,6 +260,8 @@ void checkswipe()
   // pressure of 0 means no pressing!
   
   if (p.z > MINPRESSURE && p.z < MAXPRESSURE) {
+    if(p.x < 300 && p.y > 750) menu();
+  //Serial.print(p.x); Serial.print(" "); Serial.println(p.y) ;  
     /*
     Serial.print("X = "); Serial.print(p.x);
     Serial.print("\tY = "); Serial.print(p.y);
@@ -222,8 +277,10 @@ void checkswipe()
     */
     ylast = p.x;
     delay(10);
-    Point p = ts.getPoint();
-    wheelval -= p.x - ylast;
+    digitalWrite(13, HIGH);
+  p = ts.getPoint();
+  digitalWrite(13, LOW);
+    if((p.x - ylast) < 100) wheelval -= p.x - ylast;
      
    
     if (wheelval > 255) wheelval = 255;
@@ -255,7 +312,8 @@ void bmpDraw(char *filename, int x, int y) {
   boolean  flip    = true;        // BMP is stored bottom-to-top
   int      w, h, row, col;
   uint8_t  r, g, b;
-  uint32_t pos = 0, startTime = millis();
+  uint32_t pos = 0;
+  //uint32_t startTime = millis();
   uint8_t  lcdidx = 0;
   boolean  first = true;
 
@@ -274,24 +332,24 @@ void bmpDraw(char *filename, int x, int y) {
 
   // Parse BMP header
   if(read16(bmpFile) == 0x4D42) { // BMP signature
-    progmemPrint(PSTR("File size: ")); Serial.println(read32(bmpFile));
+    //Serial.print(F("File size: ")); Serial.println(read32(bmpFile));
     (void)read32(bmpFile); // Read & ignore creator bytes
     bmpImageoffset = read32(bmpFile); // Start of image data
-    progmemPrint(PSTR("Image Offset: ")); Serial.println(bmpImageoffset, DEC);
+    //Serial.print(F("Image Offset: ")); Serial.println(bmpImageoffset, DEC);
     // Read DIB header
-    progmemPrint(PSTR("Header size: ")); Serial.println(read32(bmpFile));
+    //Serial.print(F("Header size: ")); Serial.println(read32(bmpFile));
     bmpWidth  = read32(bmpFile);
     bmpHeight = read32(bmpFile);
     if(read16(bmpFile) == 1) { // # planes -- must be '1'
       bmpDepth = read16(bmpFile); // bits per pixel
-      progmemPrint(PSTR("Bit Depth: ")); Serial.println(bmpDepth);
+      //Serial.print(F("Bit Depth: ")); Serial.println(bmpDepth);
       if((bmpDepth == 24) && (read32(bmpFile) == 0)) { // 0 = uncompressed
 
         goodBmp = true; // Supported BMP format -- proceed!
-        progmemPrint(PSTR("Image size: "));
-        Serial.print(bmpWidth);
-        Serial.print('x');
-        Serial.println(bmpHeight);
+        //Serial.print(F("Image size: "));
+        //Serial.print(bmpWidth);
+        //Serial.print('x');
+        //Serial.println(bmpHeight);
 
         // BMP rows are padded (if needed) to 4-byte boundary
         rowSize = (bmpWidth * 3 + 3) & ~3;
@@ -357,9 +415,9 @@ void bmpDraw(char *filename, int x, int y) {
           SPCR = 0;
           tft.pushColors(lcdbuffer, lcdidx, first);
         } 
-        progmemPrint(PSTR("Loaded in "));
-        Serial.print(millis() - startTime);
-        Serial.println(" ms");
+        //Serial.print(F("Loaded in "));
+        //Serial.print(millis() - startTime);
+        //Serial.println(" ms");
       } // end goodBmp
     }
   }
@@ -401,3 +459,11 @@ void progmemPrintln(const char *str) {
   Serial.println();
 }
 
+void boxes() { // redraw the button outline boxes
+  tft.drawRect(0, 20, 150, 50, JJCOLOR);
+  tft.drawRect(170, 20, 150, 50, JJCOLOR);
+  tft.drawRect(0, 80, 150, 50, JJCOLOR);
+  tft.drawRect(170, 80, 150, 50, JJCOLOR);
+  tft.drawRect(0, 140, 150, 50, JJCOLOR);
+  tft.drawRect(170, 140, 150, 50, JJCOLOR);
+}
