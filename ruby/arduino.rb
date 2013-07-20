@@ -7,7 +7,7 @@ require './light_control'
 
 ardunio = SerialCapture.new
 lights = LightControl.new('192.168.1.225')
-@last_check = Time.now(0)
+@last_check = Time.new(0)
 
 ardunio.start do |response|
   
