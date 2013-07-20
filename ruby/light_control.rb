@@ -1,3 +1,5 @@
+require 'httparty'
+
 class LightControl
   
   BRIGHTNESS_RANGE = 0..255
