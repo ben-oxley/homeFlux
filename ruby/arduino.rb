@@ -9,14 +9,10 @@ lights = LightControl.new('192.168.1.225')
 
 ardunio.start do |response|
   
-  process_brightness(response)
-  
-  
-end
-
-def process_brightness(response)
   unscaled_bri = response.split(',')[1]
   bri = (unscaled_bri.to_f / 1024.0) * 255.0
   lights.set_brightness(255 - bri.to_i)
+  
+  
 end
 
