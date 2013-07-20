@@ -19,9 +19,9 @@ ardunio.start do |response|
   lights.set_brightness(255 - bri.to_i)
   
  
-  elevation = solar_elevation(DateTime.now - (count / 24), 51.5, -0.12) 
+  elevation = solar_elevation(DateTime.now + (count / 24.0), 51.5, -0.12) 
   temperature = Temp.calculate_interpolated_temperature(elevation, Temp::DAY_TEMP, Temp::NIGHT_TEMP)
-  puts "(" + Time.now.to_s + "; " + elevation.to_s + "; " + temperature.to_s + ")"
+  puts "(" + Time.now.to_s + "; " + elevation.to_s + "; " + temperature.to_s + "; #{count})"
   
   
   count += 1
