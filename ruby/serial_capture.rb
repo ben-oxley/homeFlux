@@ -22,7 +22,7 @@ class SerialCapture
   
   private
   
-  def main_loop do 
+  def main_loop 
     loop do
       r = arduino.readline("\r")
       puts r
