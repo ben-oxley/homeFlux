@@ -4,7 +4,7 @@ require './serial_capture'
 require './light_control'
 
 
-ardunio = SerialCaptupe.new
+ardunio = SerialCapture.new
 ardunio.start do |response|
   
   puts "block #{response}"
