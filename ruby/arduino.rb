@@ -21,7 +21,7 @@ ardunio.start do |response|
   temperature = Temp.calculate_interpolated_temperature(elevation, Temp::DAY_TEMP, Temp::NIGHT_TEMP)
   puts "(" + Time.now.to_s + "; " + elevation.to_s + "; " + temperature.to_s + "; #{count})"
   
-  lights.update_light_group({ :bri => bri, :ct => temperature })
+  lights.update_light_group({ :bri => bri.to_i, :ct => temperature.to_i })
 
   count += 1
 
