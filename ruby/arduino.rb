@@ -12,7 +12,7 @@ ardunio.start do |response|
   puts "chomp #{response.gsub("\n", "")}"
   unscaled_bri = response.split(',')[1]
   
-  bri = (unscaled_bri / 1024) * 255
+  bri = (unscaled_bri.to_i / 1024) * 255
   
   lights.set_brightness(bri)
   
