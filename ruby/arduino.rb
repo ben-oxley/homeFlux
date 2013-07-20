@@ -13,13 +13,17 @@ count = 0
 ardunio.start do |response|
   count = 0 if count == 24
   
+  puts response
+  
   # process brightness
   unscaled_bri = response.split(',')[1]
   bri = 255 - ((unscaled_bri.to_f / 1024.0) * 255.0)
  
+  # calculate temperature
   elevation = solar_elevation(DateTime.now + (count / 24.0), 51.5, -0.12) 
   temperature = Temp.calculate_interpolated_temperature(elevation, Temp::DAY_TEMP, Temp::NIGHT_TEMP)
   
+  # set the light data
   lights.update_light_group({ :bri => bri.to_i, :ct => temperature.to_i })
 
   count += 1
