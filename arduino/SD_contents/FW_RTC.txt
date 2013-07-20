@@ -1,0 +1,86 @@
+FW version: 1800 V2.00
+FW name:ContourROAM2
+ 
+UPDATE:N
+UPDATE_FW:N
+
+1RES:A
+1BR:H
+1MIC:17
+1LED:1
+1LSR:1
+1SILENT:0
+1EV:0
+1SHRP:3
+1AE:C
+1CTST:62
+1AWB:0
+
+	GLOBAL
+CAMERA NAME:ContourROAM2
+DT:2013/02/06 16:57:29
+FPS:25
+
+	CAMERA INFO
+CUID:1246010111572
+
+	USER DATA
+DATA:ContourROAM2 Camera
+
+DATA STRUCTURE
+UPDATE
+	 Y:YES
+	 N:NO
+UPDATE_FW
+	 Y:YES
+	 N:NO
+
+Format Settings
+Resolution(RES)
+	(A)1920x1080 30fps (NTSC)/25fps (PAL)
+	(B)1280x960  30fps (NTSC)/25fps (PAL)
+	(C)1280x720  30fps (NTSC)/25fps (PAL)
+	(D)1280x720  60fps (NTSC)/50fps (PAL)
+	(P/#)Still picture 5Mp captured at intervals of 1 picture every 1, 3, 5, 10, 30, 60 seconds (where the time is measured from start of picture to start of picture)
+Bitrate(BR)
+	(H)High
+	(L)Low
+Microphone Sensitivity(MIC)
+	0 ~ 42dB
+Lighting(LED)
+	(0):disabled
+	(1):enabled
+Laser(LSR)
+	(0):disabled
+	(1):enabled
+Silent Mode(SILENT)
+	(0)Enable Beeps
+	(1)Disable beeps
+Exposure(EV)
+	-4 ~ 4
+Sharpness(SHRP)
+	1 ~ 5
+Auto Exposure(AE)
+	(C)Center
+	(A)Average
+	(S)Spot
+Contrast(CTST)
+	1 ~ 255
+AutoWhiteBalance(AWB)
+	(0)AUTO  (1)2800K_Incandescent  (2)4000K_Flourescent  (3)5000K_DaylightD50
+	(4)6500K_DaylightD65  (5)7500k_Cloudy  (6)9000k_Shade  (7)10000k_XenonHID
+
+Global Settings
+Frame Rate(FPS)
+	(25)25/50fps
+	(30)30/60fps
+Camera name(CAMERA NAME)[up to 20 characters]
+	Name entered by user e.g. Jason's Contour
+Date and Time(DT)
+	YYYY/MM/DD hh:mm:ss
+	YYYY : 2012 - 2040
+	MM : 01 - 12
+	DD : 01 - 31
+User Data(DATA)[up to 100 characters]
+	'User' value in the universal settings section 
+	where the line contents are simply preserved by the camera.
