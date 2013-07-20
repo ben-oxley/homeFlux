@@ -3,7 +3,7 @@ require 'httparty'
 require 'json'
 require 'geokit'
 require './geokit_config'
-require './party'
+require './light_control'
 require './lat_and_long'
 
 # t1 = Thread.new do

@@ -19,9 +19,9 @@ wait_time = 1/4.0 #in seconds
 #forever?
 loop do
   #arduino.write "whateveryouwanttowrite"
-  puts arduino.readline("\r") #read everything up to '\r'
+  puts arduino.readline("\n") #read everything up to '\r'
 
   # wait a little bit before we read the next message?
   # I think we want to do something and restart reading immediately
-  # sleep wait_time
+  sleep wait_time
 end
