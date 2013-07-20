@@ -7,6 +7,7 @@ require './light_control'
 
 ardunio = SerialCapture.new
 lights = LightControl.new('192.168.1.225')
+@last_check = Time.now(0)
 
 ardunio.start do |response|
   
@@ -16,10 +17,16 @@ ardunio.start do |response|
   lights.set_brightness(255 - bri.to_i)
   
   # check temp
-  elevation = solar_elevation( (date+i/24.0) , 51.5, -0.12) 
-	temperature = Temp.calculate_interpolated_temperature(elevation, Temp::DAY_TEMP, Temp::NIGHT_TEMP)
-	puts "(" + (date+i/24.0).to_s + "; " + elevation.to_s + "; " + temperature.to_s + ")"
   
+  if Time.now - 300 > @last_check 
+    puts 'once'
+    
+    elevation = solar_elevation(DateTime.now, 51.5, -0.12) 
+	  temperature = Temp.calculate_interpolated_temperature(elevation, Temp::DAY_TEMP, Temp::NIGHT_TEMP)
+	  puts "(" + (date+i/24.0).to_s + "; " + elevation.to_s + "; " + temperature.to_s + ")"
+	  
+	  @last_check = Time.now
+  end
   
 end
 
