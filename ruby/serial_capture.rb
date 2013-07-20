@@ -25,7 +25,6 @@ class SerialCapture
   def main_loop 
     loop do
       r = @arduino.readline("\r")
-      puts r
       yield r if block_given?
       sleep @settings[:wait_time]
     end

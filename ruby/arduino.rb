@@ -7,6 +7,8 @@ require './light_control'
 ardunio = SerialCapture.new
 ardunio.start do |response|
   
-  puts "block #{response}"
+  puts response
+  
+  puts "chomp #{response.chomp}"
 end
 
