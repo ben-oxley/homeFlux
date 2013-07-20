@@ -9,7 +9,7 @@ lights = LightControl.new('192.168.1.225')
 
 ardunio.start do |response|
   
-  process_brightness
+  process_brightness(response)
   
   
 end
