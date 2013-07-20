@@ -27,7 +27,7 @@ class SerialCapture
       r = @arduino.readline("\r")
       puts r
       yield r if block_given?
-      sleep wait_time
+      sleep @settings[:wait_time]
     end
     
   end
