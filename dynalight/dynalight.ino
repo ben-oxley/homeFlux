@@ -7,7 +7,7 @@
 #include <Adafruit_TFTLCD.h> // Hardware-specific library
 #include <SD.h>
 #include <TouchScreen.h>
-#include <MemoryFree.h>
+//#include <MemoryFree.h>
 #include <PID_v1.h>
 
 #ifndef USE_ADAFRUIT_SHIELD_PINOUT 
@@ -93,7 +93,7 @@ int lastwheelval = 0;
 double Input, Output;
 
 //Specify the links and initial tuning parameters
-PID myPID(&Input, &Output, &wheelval,1.0,1.0,0.0, DIRECT);
+PID myPID(&Input, &Output, &wheelval,0.1,0.1,0.0, DIRECT);
 
 void setup()
 {
@@ -103,7 +103,7 @@ void setup()
 
   //uint16_t identifier = tft.readID();
 uint16_t identifier = 0x7575;
-/*
+
   if(identifier == 0x9325) {
     progmemPrintln(PSTR("Found ILI9325 LCD driver"));
   } else if(identifier == 0x9328) {
@@ -115,7 +115,7 @@ uint16_t identifier = 0x7575;
     Serial.println(identifier, HEX);
     return;
   }
-*/ 
+
   tft.begin(identifier);
 
   progmemPrint(PSTR("Initializing SD card..."));
@@ -126,8 +126,7 @@ uint16_t identifier = 0x7575;
   progmemPrintln(PSTR("OK!"));
   spi_save = SPCR;
   tft.setCursor(0, 0);
-  //tft.fillScreen(BLACK);
-  //tft.setRotation(1);
+  tft.fillScreen(BLACK);
   bmpDraw("Arrow.bmp", 0, 0);
   tft.fillScreen(0);
   tft.setRotation(1);
@@ -144,17 +143,16 @@ void loop()
   //drawcircle();
   checkswipe();
   //drawcircle();
-  Input = analogRead(A5);
+  Input = analogRead(A5)/4;
   if (lastwheelval != wheelval) { 
     lastwheelval = wheelval; 
     polarcoords(105,map(wheelval, 0, 255, -220, 45));
-    
-    Serial.print(wheelval); Serial.print(","); Serial.print(analogRead(A5)); Serial.print(","); Serial.println(50); Serial.print(","); Serial.println(freeMemory());
+    Serial.print(wheelval); Serial.print(","); Serial.print(Input); Serial.print(","); Serial.println((int)Output); //Serial.print(","); Serial.println(freeMemory());
     //Serial.println(wheelval);
   }
   myPID.Compute();
 }
-
+/*
 void menu()
 {
   tft.fillScreen(0);
@@ -195,7 +193,7 @@ void menu()
   delay(500);
   tft.print("Menu");
 }
-
+*/
 void printTime()
 {
   String sh,sm;
@@ -218,7 +216,9 @@ void printTime()
     tft.setTextColor(WHITE);  tft.setTextSize(3);
     tft.print(sh+":"+sm);
     lastseconds = seconds;
-    Serial.print(wheelval); Serial.print(","); Serial.print(analogRead(A5)); Serial.print(","); Serial.println(50); //Serial.print(","); Serial.println(freeMemory());
+    Input = analogRead(A5)/4;
+    myPID.Compute();
+    Serial.print(wheelval); Serial.print(","); Serial.print(Input); Serial.print(","); Serial.println((int)Output); //Serial.print(","); Serial.println(freeMemory());
   }
   
 }
@@ -260,7 +260,7 @@ void checkswipe()
   // pressure of 0 means no pressing!
   
   if (p.z > MINPRESSURE && p.z < MAXPRESSURE) {
-    if(p.x < 300 && p.y > 750) menu();
+    //if(p.x < 300 && p.y > 750) menu();
   //Serial.print(p.x); Serial.print(" "); Serial.println(p.y) ;  
     /*
     Serial.print("X = "); Serial.print(p.x);
@@ -332,21 +332,21 @@ void bmpDraw(char *filename, int x, int y) {
 
   // Parse BMP header
   if(read16(bmpFile) == 0x4D42) { // BMP signature
-    //Serial.print(F("File size: ")); Serial.println(read32(bmpFile));
+    Serial.print(F("File size: ")); Serial.println(read32(bmpFile));
     (void)read32(bmpFile); // Read & ignore creator bytes
     bmpImageoffset = read32(bmpFile); // Start of image data
-    //Serial.print(F("Image Offset: ")); Serial.println(bmpImageoffset, DEC);
+    Serial.print(F("Image Offset: ")); Serial.println(bmpImageoffset, DEC);
     // Read DIB header
-    //Serial.print(F("Header size: ")); Serial.println(read32(bmpFile));
+    Serial.print(F("Header size: ")); Serial.println(read32(bmpFile));
     bmpWidth  = read32(bmpFile);
     bmpHeight = read32(bmpFile);
     if(read16(bmpFile) == 1) { // # planes -- must be '1'
       bmpDepth = read16(bmpFile); // bits per pixel
-      //Serial.print(F("Bit Depth: ")); Serial.println(bmpDepth);
+      Serial.print(F("Bit Depth: ")); Serial.println(bmpDepth);
       if((bmpDepth == 24) && (read32(bmpFile) == 0)) { // 0 = uncompressed
 
         goodBmp = true; // Supported BMP format -- proceed!
-        //Serial.print(F("Image size: "));
+        Serial.print(F("Image size: "));
         //Serial.print(bmpWidth);
         //Serial.print('x');
         //Serial.println(bmpHeight);
@@ -458,7 +458,7 @@ void progmemPrintln(const char *str) {
   progmemPrint(str);
   Serial.println();
 }
-
+/*
 void boxes() { // redraw the button outline boxes
   tft.drawRect(0, 20, 150, 50, JJCOLOR);
   tft.drawRect(170, 20, 150, 50, JJCOLOR);
@@ -466,4 +466,4 @@ void boxes() { // redraw the button outline boxes
   tft.drawRect(170, 80, 150, 50, JJCOLOR);
   tft.drawRect(0, 140, 150, 50, JJCOLOR);
   tft.drawRect(170, 140, 150, 50, JJCOLOR);
-}
+}*/
