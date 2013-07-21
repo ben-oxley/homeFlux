@@ -25,13 +25,14 @@ class SerialCapture
                      @settings[:stop_bits], 
                      @settings[:parity]) do |arduino|
                        
+                       puts "Ardunio setup with #{arduino}"
                        main_loop(arduino, &block)
                        
                        
                      end
 
-    puts "Ardunio setup with #{@arduino}"
-    main_loop(&block)
+    # puts "Ardunio setup with #{@arduino}"
+    # main_loop(&block)
   end
   
   private
