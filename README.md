@@ -1,6 +1,7 @@
 homeFlux
 ========
 Created by Ben Oxley, Jordan Rogers-Smith, Marcello Seri and James Jackson
+--------------------------------------------------------------------------
 
 Creating a lighting solution for energy efficiency and wellbeing to work with Philips Hue lighting systems
 
