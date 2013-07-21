@@ -23,6 +23,7 @@ Homeflux is designed as a first prototype to read light in a room and serve a to
    
 **This all results in a energy efficient, money saving and super life improving system.**
 
-
-
 It's always possible that some extra information may be found at: [benoxley.com](http://benoxley.com/ "benoxley.com")
+
+[1]	Ying-Wen Bai and Yi-Te Ku, "AUTOMATIC ROOM LIGHT INTENSITY DETECTION AND CONTROL USING A MICROPROCESSOR AND LIGHT SENSORS," Department of Electronic Engineering, Fu Jen Catholic University, Taiwan,.
+
