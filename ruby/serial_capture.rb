@@ -17,6 +17,7 @@ class SerialCapture
                               @settings[:stop_bits], 
                               @settings[:parity])
     
+    puts "Ardunio setup with #{@arduino}"
     main_loop(&block)
   end
   
