@@ -24,6 +24,7 @@ class SerialCapture
   private
   
   def main_loop 
+    puts 'above loop'
     loop do
       r = @arduino.readline("\r")
       yield r if block_given?
