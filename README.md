@@ -9,7 +9,7 @@ Created by Ben Oxley, Jordan Rogers-Smith, Marcello Seri and James Jackson
 
 homeFlux is unique. It balances interior lighting with natural light levels to maintain a constant room brightness and adapts the colour temperature to match the time of day. homeFlux saves energy by ensuring that only the minimum amount of light is supplied when it is required by measuring the light levels in the room in real time. The smart control allows the user to set a desired intensity level and a feedback loop between the natural light, light sensor and hue lights adjust to match that brightness. As well as brightness matching the homeFlux changes the rooms colour temperature as the sun goes down and comes up, 
 
-![smexyLightswitch](http://cl.ly/image/3W1c3y1S2Q2w)
+![smexyLightswitch](http://f.cl.ly/items/2k1N0r1R2d1l2o260U2u/Screen%20Shot%202013-07-21%20at%2011.10.41.png)
 
 providing a relaxing transition to a soothing evening light that can aid in sleep (the original flux is based on alot of research into this stuff http://justgetflux.com/research.html)
 
