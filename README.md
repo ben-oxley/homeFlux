@@ -5,6 +5,8 @@ Created by Ben Oxley, Jordan Rogers-Smith, Marcello Seri and James Jackson
 
 ![smexyLightswitch](http://benoxley.co.uk/wp-content/uploads/2012/06/20120427162844_15s.jpg)
 
+**Your home, more relaxing. Saving polar bears.**
+
 homeFlux is unique as it balances interior lighting with natural light levels to maintain a constant room brightness. The ambient light switch saves energy by ensuring that only the minimum amount of light is supplied when it is required. By using a smart control it is also possible to introduce extra functionality into the lighting system. Advanced features can be programmed into the system, such as automatic on/off times which can help increase home security. The product can be installed in any room with natural lighting in domestic and commercial environments.
 
 The intelligent light switch can save up to 80% of power usage, with an average of 40% (assuming that lights are left on during occupancy) [1].
