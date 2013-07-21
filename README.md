@@ -7,7 +7,10 @@ Created by Ben Oxley, Jordan Rogers-Smith, Marcello Seri and James Jackson
 
 **Your home, more relaxing. Saving polar bears.**
 
-homeFlux is unique as it balances interior lighting with natural light levels to maintain a constant room brightness. The ambient light switch saves energy by ensuring that only the minimum amount of light is supplied when it is required. By using a smart control it is also possible to introduce extra functionality into the lighting system. Advanced features can be programmed into the system, such as automatic on/off times which can help increase home security. The product can be installed in any room with natural lighting in domestic and commercial environments.
+homeFlux is unique. It balances interior lighting with natural light levels to maintain a constant room brightness and adapts the colour temperature to match the time of day. homeFlux saves energy by ensuring that only the minimum amount of light is supplied when it is required by measuring the light levels in the room in real time. The smart control allows the user to set a desired intensity level and a feedback loop between the natural light, light sensor and hue lights adjust to match that brightness. As well as brightness matching the homeFlux changes the rooms colour temperature as the sun goes down and comes up, providing a relaxing transition to a soothing evening light that can aid in sleep (the original flux is based on alot of research into this stuff http://justgetflux.com/research.html)
+
+
+The smart control also makes it possible to introduce extra functionality into the lighting system, Advanced features can be programmed into the system, such as automatic on/off times which can help increase home security. The product can be installed in any room with natural lighting in domestic and commercial environments.
 
 The intelligent light switch can save up to 80% of power usage, with an average of 40% (assuming that lights are left on during occupancy) [1].
 The light switch also ensures that working conditions are kept stable and there is always plenty of light available in a room. The ambient light switch intelligently controls the brightness of the room in order to create a pleasant working environment, reducing eye strain and having a positive effect on health and happiness.
