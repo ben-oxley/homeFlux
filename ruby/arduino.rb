@@ -10,6 +10,13 @@ ardunio = SerialCapture.new
 lights = LightControl.new('192.168.1.225')
 count = 0
 
+
+Thread.new do
+  loop do
+    exit if gets.chomp == 'q'
+  end
+end
+
 ardunio.start do |response|
   count = 0 if count == 24
   
