@@ -9,11 +9,11 @@ require './light_control'
 ardunio = SerialCapture.new
 lights = LightControl.new('192.168.1.225')
 count = 0
-stop = false
+stopped = false
 
 Thread.new do
   loop do
-    stop = true if gets.chomp == 'q'
+    stopped = true and break if gets.chomp == 'q'
   end
 end
 
@@ -36,6 +36,6 @@ ardunio.start do |response|
 
   count += 1
   
-  break if stop
+  break if stopped
 end
 
