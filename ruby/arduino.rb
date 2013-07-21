@@ -9,11 +9,11 @@ require './light_control'
 ardunio = SerialCapture.new
 lights = LightControl.new('192.168.1.225')
 count = 0
-
+stop = false
 
 Thread.new do
   loop do
-    exit if gets.chomp == 'q'
+    stop = true if gets.chomp == 'q'
   end
 end
 
@@ -35,6 +35,7 @@ ardunio.start do |response|
   lights.update_light_group({:on => on_state, :bri => bri.to_i, :ct => temperature.to_i })
 
   count += 1
-
+  
+  break if stop
 end
 
