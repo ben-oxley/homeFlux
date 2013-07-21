@@ -29,7 +29,7 @@ ardunio.start do |response|
   elevation = solar_elevation(DateTime.now + (count / 24.0), 51.5, -0.12) 
   temperature = Temp.calculate_interpolated_temperature(elevation, Temp::DAY_TEMP, Temp::NIGHT_TEMP)
   
-  if bri == 0.0
+  if bri.to_i == 0
     on_state = false
   else
     on_state = true
