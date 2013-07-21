@@ -93,7 +93,7 @@ int lastwheelval = 0;
 double Input, Output;
 
 //Specify the links and initial tuning parameters
-PID myPID(&Input, &Output, &wheelval,0.1,0.1,0.0, DIRECT);
+PID myPID(&Input, &Output, &wheelval,0.2,0.2,0.0, DIRECT);
 
 void setup()
 {
