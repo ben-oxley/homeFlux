@@ -11,22 +11,35 @@ class SerialCapture
   end
   
   def start(&block)
-    @arduino = SerialPort.new( @settings[:port_file], 
-                              @settings[:baud_rate], 
-                              @settings[:data_bits], 
-                              @settings[:stop_bits], 
-                              @settings[:parity])
     
+    
+    # @arduino = SerialPort.new( @settings[:port_file], 
+    #                           @settings[:baud_rate], 
+    #                           @settings[:data_bits], 
+    #                           @settings[:stop_bits], 
+    #                           @settings[:parity])
+                              
+    SerialPort.open( @settings[:port_file], 
+                     @settings[:baud_rate], 
+                     @settings[:data_bits], 
+                     @settings[:stop_bits], 
+                     @settings[:parity]) do |arduino|
+                       
+                       main_loop(arduino, &block)
+                       
+                       
+                     end
+
     puts "Ardunio setup with #{@arduino}"
     main_loop(&block)
   end
   
   private
   
-  def main_loop 
+  def main_loop(arduino) 
     puts 'above loop'
     loop do
-      r = @arduino.readline("\r")
+      r = arduino.readline("\r")
       yield r if block_given?
       sleep @settings[:wait_time]
     end
